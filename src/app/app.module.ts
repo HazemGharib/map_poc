@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapsWidgetComponent } from './maps-widget/maps-widget.component';
+import { TestPageComponent } from './test-page/test-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapsWidgetComponent
+    MapsWidgetComponent,
+    TestPageComponent
   ],
   imports: [
     BrowserModule,
