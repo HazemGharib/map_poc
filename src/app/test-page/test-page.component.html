@@ -1,1 +1,14 @@
-<app-maps-widget></app-maps-widget>
+<select class='select-option'
+    #mySelect
+    (change)='onOptionsSelected(mySelect.value)'>
+   <option class='option' 
+   *ngFor='let option of dropDownData' 
+   [value]="option.seo_val">{{option.text_val}}</option>
+</select>
+<div id="map">
+    <app-maps-widget
+        [zoom]="zoom"
+        [center]="center"
+        [markers]="markers"
+    ></app-maps-widget>
+</div>
