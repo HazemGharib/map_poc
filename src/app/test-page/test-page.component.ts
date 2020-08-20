@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MapProviders } from '../maps-widget/@types/map-providers';
 
 @Component({
   selector: 'app-test-page',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./test-page.component.css']
 })
 export class TestPageComponent implements OnInit {
-  provider;
+  provider: MapProviders = {provider: 'googleMaps'};
   zoom = 3;
   center = {lng: 32.3, lat: 30.6};
   markers = [
@@ -17,9 +18,9 @@ export class TestPageComponent implements OnInit {
   ];
 
   dropDownData = [
-    {seo_val: 'googleMaps', text_val: 'Google Maps'},
-    {seo_val: 'here', text_val: 'Here'},
-    {seo_val: 'openStreetMap', text_val: 'Open Street Map'}
+    {provider: 'googleMaps', text: 'Google Maps'},
+    {provider: 'here', text: 'Here'},
+    {provider: 'openStreetMap', text: 'Open Street Map'}
   ];
 
   constructor() { }
@@ -27,8 +28,8 @@ export class TestPageComponent implements OnInit {
   ngOnInit() {
   }
 
-  onOptionsSelected(value: string) {
-    this.provider = value;
+  onOptionsSelected(value) {
+    this.provider = {provider: value};
   }
 
 }

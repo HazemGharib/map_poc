@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import {MapInitializer, Marker} from './mapInitializer';
+import {MapInitializer} from './mapInitializer';
 import {MapUtils} from './map-utils';
+import {Marker} from './@types/marker';
+import {MapProviders} from './@types/map-providers';
 
 @Component({
   selector: 'app-maps-widget',
@@ -8,17 +10,14 @@ import {MapUtils} from './map-utils';
   styleUrls: ['./maps-widget.component.css']
 })
 export class MapsWidgetComponent implements OnInit {
-  @Input() provider: 'googleMaps' | 'here' | 'openStreetMap';
+  @Input() provider: MapProviders;
   @Input() zoom;
   @Input() center;
   @Input() markers: Marker[];
 
   @ViewChild('mapContainer') gmap: ElementRef;
 
-  // Static
   async ngOnInit() {
-    this.provider = this.provider || 'googleMaps';
-
     const providerOptions = {
       gmapElement: this.gmap,
       center: this.center,
@@ -27,32 +26,12 @@ export class MapsWidgetComponent implements OnInit {
     };
 
     if (this.center) { return MapInitializer.initialize(this.provider, providerOptions); }
-    this.getCurrentLocation(() => MapInitializer.initialize(this.provider, providerOptions));
-    // MapUtils.getCurrentLocation((position) => {
-    //   this.center = {
-    //     lat: position.coords.latitude,
-    //     lng: position.coords.longitude
-    //   };
-    //   MapInitializer.initialize(this.provider, providerOptions);
-    // });
-  }
-
-  getCurrentLocation(callback) {
-    navigator.geolocation.getCurrentPosition(position => {
+    MapUtils.getCurrentLocation((position) => {
       this.center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      callback();
-    });
-  }
-
-  watchCurrentLocation() {
-    navigator.geolocation.watchPosition(position => {
-      this.center = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
+      MapInitializer.initialize(this.provider, providerOptions);
     });
   }
 }

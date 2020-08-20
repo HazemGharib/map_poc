@@ -1,62 +1,24 @@
-import {ElementRef} from '@angular/core';
-
-export interface Coords {
-   lat: number;
-   lng: number;
-}
-
-export interface Marker {
-    position: Coords;
-    color: string;
-}
-
-export interface MapProviderOptions {
-    gmapElement: ElementRef;
-    center: Coords;
-    zoom: number;
-    markers: Marker[];
-}
+import {MapProviderOptions} from './@types/map-provider-options';
+import {GoogleMapsProvider} from './map-providers/google-maps-provider';
+import {HereProvider} from './map-providers/here-provider';
+import {OpenStreetMapProvider} from './map-providers/open-street-map-provider';
+import {MapProviders} from './@types/map-providers';
 
 export class MapInitializer {
-    private static provider;
-
-    public static initialize(provider, providerOptions: MapProviderOptions) {
-        // Provider based
-        const mapOptions: google.maps.MapOptions = {
-            center: providerOptions.center || {lng: 0, lat: 0},
-            zoom: providerOptions.zoom || 8
-        };
-
-        // Provider based
-        const map = new google.maps.Map(providerOptions.gmapElement.nativeElement,
-            mapOptions);
-
-        this.addCurrentMarker(map, providerOptions.center);
-
-
-        providerOptions.markers.forEach(marker => {
-            this.addMarker(map, marker.position, marker.color);
-        });
-    }
-
-    // Provider based
-    private static addCurrentMarker = (map, center) => new google.maps.Marker({
-        map,
-        position: center,
-        title: `You're here!`
-    })
-
-    // Provider based
-    private static addMarker(map, position, color) {
-        let url = 'http://maps.google.com/mapfiles/ms/icons/';
-        url += color + '-dot.png';
-
-        return new google.maps.Marker({
-            map,
-            position,
-            icon: {
-                url
-            }
-        });
+    public static initialize({provider}: MapProviders, providerOptions: MapProviderOptions) {
+        switch (provider) {
+            case 'googleMaps':
+                GoogleMapsProvider.initialize(providerOptions);
+                break;
+            case 'here':
+                HereProvider.initialize(providerOptions);
+                break;
+            case 'openStreetMap':
+                OpenStreetMapProvider.initialize(providerOptions);
+                break;
+            default: // Defaults to GoogleMaps
+                GoogleMapsProvider.initialize(providerOptions);
+                break;
+        }
     }
 }
