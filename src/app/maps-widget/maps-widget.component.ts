@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { environment } from '../../environments/environment';
+import {MapInitializer, Marker} from './mapInitializer';
+import {MapUtils} from './map-utils';
 
 @Component({
   selector: 'app-maps-widget',
@@ -7,39 +8,33 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./maps-widget.component.css']
 })
 export class MapsWidgetComponent implements OnInit {
-  env = environment.GOOGLE_MAPS_API_KEY;
-
-  @ViewChild('mapContainer') gmap: ElementRef;
-  map: google.maps.Map;
-
+  @Input() provider: 'googleMaps' | 'here' | 'openStreetMap';
   @Input() zoom;
   @Input() center;
-  @Input() markers: {position: object, icon: string}[];
+  @Input() markers: Marker[];
 
-  mapInitializer() {
-    const mapOptions: google.maps.MapOptions = {
+  @ViewChild('mapContainer') gmap: ElementRef;
+
+  // Static
+  async ngOnInit() {
+    this.provider = this.provider || 'googleMaps';
+
+    const providerOptions = {
+      gmapElement: this.gmap,
       center: this.center,
-      zoom: this.zoom || 8
+      markers: this.markers,
+      zoom: this.zoom
     };
 
-    const currentPosition = new google.maps.Marker({
-      position: this.center,
-      map: this.map,
-      title: `You're here!`
-    });
-
-    this.map = new google.maps.Map(this.gmap.nativeElement,
-      mapOptions);
-    currentPosition.setMap(this.map);
-
-    this.markers.forEach(marker => {
-      this.addMarker(this.map, marker.position, marker.icon).setMap(this.map);
-    });
-  }
-
-  async ngOnInit() {
-    if (this.center) { return this.mapInitializer(); }
-    this.getCurrentLocation(() => this.mapInitializer());
+    if (this.center) { return MapInitializer.initialize(this.provider, providerOptions); }
+    this.getCurrentLocation(() => MapInitializer.initialize(this.provider, providerOptions));
+    // MapUtils.getCurrentLocation((position) => {
+    //   this.center = {
+    //     lat: position.coords.latitude,
+    //     lng: position.coords.longitude
+    //   };
+    //   MapInitializer.initialize(this.provider, providerOptions);
+    // });
   }
 
   getCurrentLocation(callback) {
@@ -58,19 +53,6 @@ export class MapsWidgetComponent implements OnInit {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-    });
-  }
-
-  addMarker(map, position, color) {
-    let url = 'http://maps.google.com/mapfiles/ms/icons/';
-    url += color + '-dot.png';
-
-    return new google.maps.Marker({
-      map,
-      position,
-      icon: {
-        url
-      }
     });
   }
 }
