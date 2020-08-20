@@ -5,7 +5,7 @@
    *ngFor='let option of dropDownData' 
    [value]="option.provider">{{option.text}}</option>
 </select>
-<div id="map">
+<div id="mapWrapper">
     <app-maps-widget
         [provider]="provider"
         [zoom]="zoom"
