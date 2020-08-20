@@ -7,7 +7,7 @@ import { MapProviders } from '../maps-widget/@types/map-providers';
   styleUrls: ['./test-page.component.css']
 })
 export class TestPageComponent implements OnInit {
-  provider: MapProviders = {provider: 'openStreetMap'};
+  provider: MapProviders = {provider: 'googleMaps'};
   zoom = 3;
   center = {lng: 32.3, lat: 30.6};
   markers = [
