@@ -8,7 +8,7 @@ import { MapProviders } from '../maps-widget/@types/map-providers';
 })
 export class TestPageComponent implements OnInit {
   provider: MapProviders = {provider: 'openStreetMap'};
-  zoom = 15;
+  zoom = 3;
   center = {lng: 32.3, lat: 30.6};
   markers = [
     {position: {lng: 33, lat: 36}, color: 'blue'},
