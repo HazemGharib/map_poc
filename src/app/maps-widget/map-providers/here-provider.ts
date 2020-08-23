@@ -6,7 +6,6 @@ declare var H: any;
 export class HereProvider {
     static initialize(providerOptions: MapProviderOptions) {
         const platform = new H.service.Platform({
-            // app_id: 'r0yif3gQUjJv1G7DjWVw',
             apiKey: '_RAg0IhBIOFgPeAHt2vfdBQlbnycdhc7CJymruc6qEQ'
         });
 
