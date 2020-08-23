@@ -1,5 +1,7 @@
+// tslint:disable: max-line-length
 import {MapProviderOptions} from '../@types/map-provider-options';
 import Point from 'ol/geom/Point';
+import {Style, Icon} from 'ol/style';
 declare var ol: any;
 
 export class OpenStreetMapProvider {
@@ -31,13 +33,22 @@ export class OpenStreetMapProvider {
     }
 
     private static addMarker(map, position, color) {
+        const point = new ol.Feature({
+            geometry: new Point(ol.proj.fromLonLat([position.lng, position.lat]))
+        });
+
+        point.setStyle(
+            new Style({
+                image: new Icon({
+                    crossOrigin: 'anonymous',
+                    src: `assets/${color || 'black'}.svg`,
+                }),
+            })
+        );
+
         const layer = new ol.layer.Vector({
             source: new ol.source.Vector({
-                features: [
-                    new ol.Feature({
-                        geometry: new Point(ol.proj.fromLonLat([position.lng, position.lat]))
-                    })
-                ]
+                features: [point]
             })
         });
         map.addLayer(layer);

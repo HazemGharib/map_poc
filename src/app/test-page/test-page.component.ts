@@ -15,6 +15,10 @@ export class TestPageComponent {
     {position: {lng: 20, lat: 20}, color: 'pink'},
     {position: {lng: -10, lat: 1}, color: 'yellow'},
     {position: {lng: -38, lat: -10}, color: 'green'},
+    {position: {lng: -36, lat: -8}, color: 'teal'},
+    {position: {lng: -34, lat: -6}, color: 'brown'},
+    {position: {lng: -32, lat: -4}, color: 'orange'},
+    {position: {lng: -30, lat: -2}, color: 'maroon'},
   ];
 
   dropDownData = [

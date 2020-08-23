@@ -19,11 +19,7 @@ export class GoogleMapsProvider {
     }
 
     private static addCurrentMarker = (map, center) => {
-        return new google.maps.Marker({
-            map,
-            position: center,
-            title: `You're here!`
-        });
+        return GoogleMapsProvider.addMarker(map, center, '');
     }
 
     private static addMarker = (map, position, color) => {
@@ -34,7 +30,7 @@ export class GoogleMapsProvider {
             map,
             position,
             icon: {
-                url
+                url: `assets/${color || 'black'}.svg`
             }
         });
     }
